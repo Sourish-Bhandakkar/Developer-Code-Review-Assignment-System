@@ -1,5 +1,4 @@
 import pg from 'pg';
-import sqlite3 from 'sqlite3';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -40,30 +39,44 @@ if (dbType === 'postgres') {
     }
   };
 } else {
-  // SQLite Local Development
-  const dbDir = path.join(__dirname, '..', 'database');
-  if (!fs.existsSync(dbDir)) {
-    fs.mkdirSync(dbDir, { recursive: true });
-  }
+  // SQLite Local Development (lazily/dynamically loaded)
+  let dbInstance = null;
 
-  const dbPath = path.join(dbDir, 'review_assignment.db');
-  console.log(`Local Development: Initializing SQLite database at: ${dbPath}`);
+  const getSqliteDb = async () => {
+    if (dbInstance) return dbInstance;
 
-  const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-      console.error('CRITICAL: Failed to open SQLite database!', err);
-    } else {
-      db.run('PRAGMA foreign_keys = ON;', (pragmaErr) => {
-        if (pragmaErr) {
-          console.error('Failed to enable PRAGMA foreign_keys', pragmaErr);
-        }
-      });
+    // Dynamically load sqlite3 to avoid loading native compiled binaries in production (Render glibc fix)
+    const { default: sqlite3 } = await import('sqlite3');
+
+    const dbDir = path.join(__dirname, '..', 'database');
+    if (!fs.existsSync(dbDir)) {
+      fs.mkdirSync(dbDir, { recursive: true });
     }
-  });
+
+    const dbPath = path.join(dbDir, 'review_assignment.db');
+    console.log(`Local Development: Initializing SQLite database at: ${dbPath}`);
+
+    return new Promise((resolve, reject) => {
+      const db = new sqlite3.Database(dbPath, (err) => {
+        if (err) {
+          console.error('CRITICAL: Failed to open SQLite database!', err);
+          return reject(err);
+        }
+        db.run('PRAGMA foreign_keys = ON;', (pragmaErr) => {
+          if (pragmaErr) {
+            console.error('Failed to enable PRAGMA foreign_keys', pragmaErr);
+          }
+          dbInstance = db;
+          resolve(db);
+        });
+      });
+    });
+  };
 
   pool = {
     dbType: 'sqlite',
-    query: (sql, params = []) => {
+    query: async (sql, params = []) => {
+      const db = await getSqliteDb();
       // Convert $1, $2 params to ? for SQLite compatibility
       const sqliteSql = sql.replace(/\$\d+/g, '?');
 
@@ -101,6 +114,8 @@ if (dbType === 'postgres') {
       });
     },
     connect: async () => {
+      // Resolve the database before returning connection methods
+      await getSqliteDb();
       return {
         query: (sql, params = []) => pool.query(sql, params),
         release: () => {} // No-op for SQLite
