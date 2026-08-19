@@ -12,9 +12,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS
+// Enable CORS dynamically based on FRONTEND_URL env variable
+const allowedOrigins = process.env.FRONTEND_URL 
+  ? [process.env.FRONTEND_URL, 'http://localhost:5173']
+  : '*';
+
 app.use(cors({
-  origin: '*', // For development, allow all origins
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -41,12 +45,7 @@ app.get('/health', (req, res) => {
 // Database status checker & auto initializer
 async function checkAndInitDatabase() {
   try {
-    // Check if the users table exists in SQLite
-    const res = await pool.query(`
-      SELECT name FROM sqlite_master WHERE type='table' AND name='users'
-    `);
-    
-    const tablesExist = res.rows.length > 0;
+    const tablesExist = await pool.checkTableExists('users');
     if (!tablesExist) {
       console.log('Database tables not found. Automatically running schema and seeding demo data...');
       await runSeeder();
@@ -68,7 +67,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   await checkAndInitDatabase();
 });

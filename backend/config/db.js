@@ -1,3 +1,4 @@
+import pg from 'pg';
 import sqlite3 from 'sqlite3';
 import path from 'path';
 import fs from 'fs';
@@ -6,91 +7,113 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Ensure the database directory exists
-const dbDir = path.join(__dirname, '..', 'database');
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
-}
+const dbType = process.env.DATABASE_URL ? 'postgres' : 'sqlite';
+let pool;
 
-const dbPath = path.join(dbDir, 'review_assignment.db');
-console.log(`Initializing SQLite database at: ${dbPath}`);
+if (dbType === 'postgres') {
+  console.log('Production/Staging: Initializing PostgreSQL database connection pool...');
+  
+  // Render PostgreSQL requires SSL in production
+  const sslConfig = process.env.NODE_ENV === 'production' 
+    ? { rejectUnauthorized: false } 
+    : false;
 
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('CRITICAL: Failed to open SQLite database!', err);
-  } else {
-    // Enable foreign keys explicitly in SQLite
-    db.run('PRAGMA foreign_keys = ON;', (pragmaErr) => {
-      if (pragmaErr) {
-        console.error('Failed to enable PRAGMA foreign_keys', pragmaErr);
-      }
-    });
+  const pgPool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: sslConfig
+  });
+
+  pool = {
+    dbType: 'postgres',
+    query: (text, params) => pgPool.query(text, params),
+    connect: () => pgPool.connect(),
+    checkTableExists: async (tableName) => {
+      const res = await pgPool.query(
+        `SELECT EXISTS (
+          SELECT FROM information_schema.tables 
+          WHERE table_schema = 'public' 
+          AND table_name = $1
+        )`,
+        [tableName]
+      );
+      return res.rows[0].exists;
+    }
+  };
+} else {
+  // SQLite Local Development
+  const dbDir = path.join(__dirname, '..', 'database');
+  if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
   }
-});
 
-/**
- * Promise-based SQLite database client interface.
- * Implements a pg-compatible pool object to minimize changes to controller code.
- */
-const pool = {
-  query: (sql, params = []) => {
-    // 1. Convert PostgreSQL parameter place-holders ($1, $2, $3...) to SQLite parameters (?)
-    const sqliteSql = sql.replace(/\$\d+/g, '?');
+  const dbPath = path.join(dbDir, 'review_assignment.db');
+  console.log(`Local Development: Initializing SQLite database at: ${dbPath}`);
 
-    return new Promise((resolve, reject) => {
-      const trimmed = sqliteSql.trim();
-      
-      // 2. Check if it contains multiple statements (like schema.sql)
-      const isMultiStatement = trimmed.includes(';') && 
-                               (trimmed.includes('CREATE TABLE') || trimmed.includes('DROP TABLE'));
+  const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+      console.error('CRITICAL: Failed to open SQLite database!', err);
+    } else {
+      db.run('PRAGMA foreign_keys = ON;', (pragmaErr) => {
+        if (pragmaErr) {
+          console.error('Failed to enable PRAGMA foreign_keys', pragmaErr);
+        }
+      });
+    }
+  });
 
-      if (isMultiStatement) {
-        db.exec(trimmed, (err) => {
-          if (err) {
-            console.error('Database error executing multi-statement batch:', err);
-            return reject(err);
-          }
-          resolve({ rows: [] });
-        });
-        return;
-      }
+  pool = {
+    dbType: 'sqlite',
+    query: (sql, params = []) => {
+      // Convert $1, $2 params to ? for SQLite compatibility
+      const sqliteSql = sql.replace(/\$\d+/g, '?');
 
-      const isSelect = trimmed.toUpperCase().startsWith('SELECT');
-      const hasReturning = trimmed.toUpperCase().includes('RETURNING');
+      return new Promise((resolve, reject) => {
+        const trimmed = sqliteSql.trim();
+        const isMultiStatement = trimmed.includes(';') && 
+                                 (trimmed.includes('CREATE TABLE') || trimmed.includes('DROP TABLE'));
 
-      // 3. Select query or queries returning tables (like INSERT... RETURNING)
-      if (isSelect || hasReturning) {
-        db.all(sqliteSql, params, (err, rows) => {
-          if (err) {
-            console.error(`Database error executing query: ${sqliteSql}`, err);
-            return reject(err);
-          }
-          resolve({ rows: rows || [] });
-        });
-      } else {
-        // 4. Modifying write query (INSERT, UPDATE, DELETE) without RETURNING
-        db.run(sqliteSql, params, function (err) {
-          if (err) {
-            console.error(`Database error executing run: ${sqliteSql}`, err);
-            return reject(err);
-          }
-          resolve({
-            rows: [],
-            lastID: this.lastID,
-            changes: this.changes
+        if (isMultiStatement) {
+          db.exec(trimmed, (err) => {
+            if (err) return reject(err);
+            resolve({ rows: [] });
           });
-        });
-      }
-    });
-  },
+          return;
+        }
 
-  // Simulates transaction checkout client pool
-  connect: async () => {
-    return {
-      query: (sql, params = []) => pool.query(sql, params),
-      release: () => {} // No-op for SQLite
-    };
-  }
-};
+        const isSelect = trimmed.toUpperCase().startsWith('SELECT');
+        const hasReturning = trimmed.toUpperCase().includes('RETURNING');
+
+        if (isSelect || hasReturning) {
+          db.all(sqliteSql, params, (err, rows) => {
+            if (err) return reject(err);
+            resolve({ rows: rows || [] });
+          });
+        } else {
+          db.run(sqliteSql, params, function (err) {
+            if (err) return reject(err);
+            resolve({
+              rows: [],
+              lastID: this.lastID,
+              changes: this.changes
+            });
+          });
+        }
+      });
+    },
+    connect: async () => {
+      return {
+        query: (sql, params = []) => pool.query(sql, params),
+        release: () => {} // No-op for SQLite
+      };
+    },
+    checkTableExists: async (tableName) => {
+      const res = await pool.query(
+        `SELECT name FROM sqlite_master WHERE type='table' AND name = $1`,
+        [tableName]
+      );
+      return res.rows.length > 0;
+    }
+  };
+}
 
 export default pool;

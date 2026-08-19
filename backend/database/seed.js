@@ -14,11 +14,12 @@ export async function runSeeder() {
   try {
     await client.query('BEGIN');
 
-    // 1. Run Schema SQL
-    const schemaSqlPath = path.join(__dirname, 'schema.sql');
+    // 1. Run Schema SQL based on database type
+    const schemaFile = pool.dbType === 'postgres' ? 'schema.sql' : 'schema_sqlite.sql';
+    const schemaSqlPath = path.join(__dirname, schemaFile);
     const schemaSql = fs.readFileSync(schemaSqlPath, 'utf8');
     await client.query(schemaSql);
-    console.log('Schema tables created successfully.');
+    console.log(`Schema tables created successfully using ${schemaFile}.`);
 
     // 2. Hash Passwords
     const developerPasswordHash = bcrypt.hashSync('password123', 10);
