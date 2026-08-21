@@ -22,8 +22,8 @@ const ProtectedRoute = ({ allowedRoles = [] }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-primary-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-transparent">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-500"></div>
       </div>
     );
   }
@@ -106,40 +106,48 @@ const RoleDashboardRedirect = () => {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Public Auth routes */}
-          <Route path="/login" element={<Login />} />
+      <div className="relative min-h-screen w-full overflow-hidden bg-[#020617] text-white">
+        {/* Slow floating ambient glows */}
+        <div className="absolute top-[-15%] left-[-15%] w-[60%] h-[60%] rounded-full bg-brand-500/5 blur-[120px] animate-blob-1 pointer-events-none z-0"></div>
+        <div className="absolute bottom-[-15%] right-[-15%] w-[60%] h-[60%] rounded-full bg-purple-500/5 blur-[120px] animate-blob-2 pointer-events-none z-0"></div>
 
-          {/* Secure layouts */}
-          <Route element={<ProtectedRoute />}>
-            <Route element={<MainLayout />}>
-              {/* Common dashboard entry */}
-              <Route path="/dashboard" element={<RoleDashboardRedirect />} />
-              <Route path="/reviews/:id" element={<ReviewDetail />} />
-              <Route path="/reviews/new" element={<ReviewForm />} />
-              
-              {/* Admin specific pages */}
-              <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
-                <Route path="/developers" element={<DevManagement />} />
-                <Route path="/developers/new" element={<DevForm />} />
-                <Route path="/developers/:id/edit" element={<DevForm />} />
-                <Route path="/reviews" element={<ReviewRequests />} />
-                <Route path="/history" element={<History />} />
+        <div className="relative z-10 w-full min-h-screen">
+          <BrowserRouter>
+            <Routes>
+              {/* Public Auth routes */}
+              <Route path="/login" element={<Login />} />
+
+              {/* Secure layouts */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<MainLayout />}>
+                  {/* Common dashboard entry */}
+                  <Route path="/dashboard" element={<RoleDashboardRedirect />} />
+                  <Route path="/reviews/:id" element={<ReviewDetail />} />
+                  <Route path="/reviews/new" element={<ReviewForm />} />
+                  
+                  {/* Admin specific pages */}
+                  <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
+                    <Route path="/developers" element={<DevManagement />} />
+                    <Route path="/developers/new" element={<DevForm />} />
+                    <Route path="/developers/:id/edit" element={<DevForm />} />
+                    <Route path="/reviews" element={<ReviewRequests />} />
+                    <Route path="/history" element={<History />} />
+                  </Route>
+
+                  {/* Developer specific pages */}
+                  <Route element={<ProtectedRoute allowedRoles={['Developer']} />}>
+                    <Route path="/my-reviews" element={<MyReviews />} />
+                    <Route path="/profile" element={<Profile />} />
+                  </Route>
+                </Route>
               </Route>
 
-              {/* Developer specific pages */}
-              <Route element={<ProtectedRoute allowedRoles={['Developer']} />}>
-                <Route path="/my-reviews" element={<MyReviews />} />
-                <Route path="/profile" element={<Profile />} />
-              </Route>
-            </Route>
-          </Route>
-
-          {/* Root Fallback */}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </BrowserRouter>
+              {/* Root Fallback */}
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </div>
     </AuthProvider>
   );
 }
