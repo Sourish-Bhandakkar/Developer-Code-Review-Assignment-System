@@ -10,7 +10,9 @@ import {
   PlusCircle, 
   AlertCircle,
   TrendingUp,
-  FileCode
+  Server,
+  Activity,
+  Cpu
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -88,7 +90,7 @@ const AdminDashboard = () => {
       {/* Dashboard Top Header */}
       <div className="bg-surface-350/30 border border-glass backdrop-blur-md p-6 rounded-2xl shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl font-black text-white tracking-wide">Admin Overview</h2>
+          <h2 className="text-xl font-black text-white tracking-wide">Admin Workspace Overview</h2>
           <p className="text-xs text-primary-400 font-semibold mt-1">Automatic review routing system summary & workload analytics</p>
         </div>
         <Link 
@@ -135,7 +137,7 @@ const AdminDashboard = () => {
         />
       </div>
 
-      {/* Visual Analytics Charts Row */}
+      {/* Visual Analytics Charts Row 1: Workload + System Status */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Workload Bar Chart */}
         <div className="bg-surface-200/90 border border-glass backdrop-blur-md p-6 rounded-2xl shadow-xl space-y-4 lg:col-span-2">
@@ -164,10 +166,63 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        {/* System Operations Status telemetry panel */}
+        <div className="bg-surface-200/90 border border-glass backdrop-blur-md p-6 rounded-2xl shadow-xl flex flex-col justify-between space-y-4">
+          <div>
+            <h3 className="text-sm font-extrabold text-white">System Operations Status</h3>
+            <p className="text-[10px] text-primary-400 font-bold uppercase tracking-wider mt-0.5">Live platform telemetry & service health</p>
+          </div>
+          
+          <div className="space-y-4 flex-1 flex flex-col justify-center">
+            <div className="flex items-center justify-between text-xs border-b border-white/5 pb-2.5">
+              <span className="text-primary-200 font-semibold flex items-center gap-2.5">
+                <Server className="h-4 w-4 text-brand-400" />
+                <span>REST API Server</span>
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+                Online
+              </span>
+            </div>
+            
+            <div className="flex items-center justify-between text-xs border-b border-white/5 pb-2.5">
+              <span className="text-primary-200 font-semibold flex items-center gap-2.5">
+                <TrendingUp className="h-4 w-4 text-brand-400" />
+                <span>SQLite Database</span>
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+                Connected
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between text-xs border-b border-white/5 pb-2.5">
+              <span className="text-primary-200 font-semibold flex items-center gap-2.5">
+                <Cpu className="h-4 w-4 text-brand-400" />
+                <span>Routing Engine</span>
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+                Active
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-primary-200 font-semibold flex items-center gap-2.5">
+                <Activity className="h-4 w-4 text-brand-400" />
+                <span>Environment Mode</span>
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2.5 py-0.5 rounded-full">
+                Production
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Visual Analytics Charts Row 2: Tech Donut Chart + Recent Reviews Table */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Language Pie Chart */}
         <div className="bg-surface-200/90 border border-glass backdrop-blur-md p-6 rounded-2xl shadow-xl flex flex-col justify-between space-y-4">
           <div>
-            <h3 className="text-sm font-extrabold text-white">Technologies Overview</h3>
+            <h3 className="text-sm font-extrabold text-white">Technology Overview</h3>
             <p className="text-[10px] text-primary-400 font-bold uppercase tracking-wider mt-0.5">Active programming language volume</p>
           </div>
           <div className="h-56 flex-1 relative flex items-center justify-center">
@@ -198,105 +253,105 @@ const AdminDashboard = () => {
             )}
           </div>
         </div>
-      </div>
 
-      {/* Recent Reviews Table */}
-      <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl shadow-xl overflow-hidden">
-        <div className="px-6 py-5 border-b border-glass flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-transparent">
-          <div>
-            <h3 className="text-sm font-extrabold text-white">Recent Pull Request Reviews</h3>
-            <p className="text-[10px] text-primary-400 font-bold uppercase tracking-wider mt-0.5">Latest review routes handled by assignment engine</p>
+        {/* Recent Reviews Table (col-span-2) */}
+        <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl shadow-xl overflow-hidden lg:col-span-2">
+          <div className="px-6 py-5 border-b border-glass flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-transparent">
+            <div>
+              <h3 className="text-sm font-extrabold text-white">Recent Pull Request Reviews</h3>
+              <p className="text-[10px] text-primary-400 font-bold uppercase tracking-wider mt-0.5">Latest review routes handled by assignment engine</p>
+            </div>
+            <Link to="/reviews" className="text-xs font-bold text-brand-400 hover:text-brand-300 hover:underline inline-flex items-center gap-1.5 transition-colors">
+              <span>View All Reviews</span>
+              <span>&rarr;</span>
+            </Link>
           </div>
-          <Link to="/reviews" className="text-xs font-bold text-brand-400 hover:text-brand-300 hover:underline inline-flex items-center gap-1.5 transition-colors">
-            <span>View All Reviews</span>
-            <span>&rarr;</span>
-          </Link>
-        </div>
 
-        <div className="overflow-x-auto">
-          {recentReviews.length > 0 ? (
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="border-b border-glass bg-white/2 text-primary-400 font-extrabold uppercase tracking-widest text-[9px]">
-                  <th className="px-6 py-4">Pull Request / Repository</th>
-                  <th className="px-6 py-4">Technologies</th>
-                  <th className="px-6 py-4">Reviewer</th>
-                  <th className="px-6 py-4">Priority</th>
-                  <th className="px-6 py-4 text-center">Match Score</th>
-                  <th className="px-6 py-4">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                {recentReviews.map((rev) => {
-                  const statusColors = {
-                    Pending: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-                    Assigned: 'bg-brand-500/10 text-brand-400 border-brand-500/20',
-                    'In Progress': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-                    Completed: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-                  };
+          <div className="overflow-x-auto">
+            {recentReviews.length > 0 ? (
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="border-b border-glass bg-white/2 text-primary-400 font-extrabold uppercase tracking-widest text-[9px]">
+                    <th className="px-6 py-4">Pull Request / Repository</th>
+                    <th className="px-6 py-4">Technologies</th>
+                    <th className="px-6 py-4">Reviewer</th>
+                    <th className="px-6 py-4">Priority</th>
+                    <th className="px-6 py-4 text-center">Match Score</th>
+                    <th className="px-6 py-4">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {recentReviews.map((rev) => {
+                    const statusColors = {
+                      Pending: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+                      Assigned: 'bg-brand-500/10 text-brand-400 border-brand-500/20',
+                      'In Progress': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+                      Completed: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+                    };
 
-                  return (
-                    <tr key={rev.id} className="hover:bg-white/2 transition-colors">
-                      <td className="px-6 py-4">
-                        <Link to={`/reviews/${rev.id}`} className="font-bold text-white hover:text-brand-400 hover:underline block text-sm transition-colors">
-                          {rev.title}
-                        </Link>
-                        <span className="text-[10px] text-primary-400 font-semibold block mt-1">
-                          {rev.repository_name} &bull; <span className="font-mono">{rev.pull_request_id}</span>
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-wrap gap-1">
-                          {rev.technologies.slice(0, 3).map((tech, idx) => (
-                            <span key={idx} className="bg-white/5 text-primary-250 px-2 py-0.5 rounded-md text-[9px] font-bold border border-white/10 shadow-sm">
-                              {tech}
-                            </span>
-                          ))}
-                          {rev.technologies.length > 3 && (
-                            <span className="text-[9px] text-primary-400 font-bold px-1.5 py-0.5 bg-white/5 border border-white/10 rounded-md">
-                              +{rev.technologies.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        {rev.assigned_developer_name ? (
-                          <div className="flex items-center gap-2">
-                            <div className="h-6 w-6 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20 font-bold flex items-center justify-center text-[10px]">
-                              {rev.assigned_developer_name.charAt(0).toUpperCase()}
-                            </div>
-                            <span className="font-semibold text-primary-200">{rev.assigned_developer_name}</span>
+                    return (
+                      <tr key={rev.id} className="hover:bg-white/2 transition-colors">
+                        <td className="px-6 py-4">
+                          <Link to={`/reviews/${rev.id}`} className="font-bold text-white hover:text-brand-400 hover:underline block text-sm transition-colors">
+                            {rev.title}
+                          </Link>
+                          <span className="text-[10px] text-primary-400 font-semibold block mt-1">
+                            {rev.repository_name} &bull; <span className="font-mono">{rev.pull_request_id}</span>
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex flex-wrap gap-1">
+                            {rev.technologies.slice(0, 2).map((tech, idx) => (
+                              <span key={idx} className="bg-white/5 text-primary-200 px-2 py-0.5 rounded-md text-[9px] font-bold border border-white/10 shadow-sm">
+                                {tech}
+                              </span>
+                            ))}
+                            {rev.technologies.length > 2 && (
+                              <span className="text-[9px] text-primary-400 font-bold px-1.5 py-0.5 bg-white/5 border border-white/10 rounded-md">
+                                +{rev.technologies.length - 2} more
+                              </span>
+                            )}
                           </div>
-                        ) : (
-                          <span className="text-red-400 font-bold italic bg-red-500/10 border border-red-500/20 rounded px-2 py-0.5 uppercase tracking-wide text-[9px]">Unassigned</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2.5 py-0.5 font-bold rounded-full text-[9px] border inline-block uppercase tracking-wider ${
-                          rev.priority === 'Critical' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-                          rev.priority === 'High' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
-                          rev.priority === 'Medium' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
-                          'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                        }`}>
-                          {rev.priority}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 font-bold font-mono text-brand-400 text-center text-sm">
-                        {rev.assignment_score ? `${rev.assignment_score}%` : '-'}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2.5 py-0.75 font-bold rounded-full border text-[9px] uppercase tracking-wider inline-block ${statusColors[rev.status] || 'bg-slate-100 text-slate-800'}`}>
-                          {rev.status}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          ) : (
-            <div className="text-center p-12 text-primary-400 font-semibold italic bg-transparent">No reviews created yet. Let's submit a pull request!</div>
-          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {rev.assigned_developer_name ? (
+                            <div className="flex items-center gap-2">
+                              <div className="h-6 w-6 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20 font-bold flex items-center justify-center text-[10px]">
+                                {rev.assigned_developer_name.charAt(0).toUpperCase()}
+                              </div>
+                              <span className="font-semibold text-primary-200">{rev.assigned_developer_name}</span>
+                            </div>
+                          ) : (
+                            <span className="text-red-400 font-bold italic bg-red-500/10 border border-red-500/20 rounded px-2 py-0.5 uppercase tracking-wide text-[9px]">Unassigned</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2.5 py-0.5 font-bold rounded-full text-[9px] border inline-block uppercase tracking-wider ${
+                            rev.priority === 'Critical' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                            rev.priority === 'High' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                            rev.priority === 'Medium' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                            'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          }`}>
+                            {rev.priority}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 font-bold font-mono text-brand-400 text-center text-sm">
+                          {rev.assignment_score ? `${rev.assignment_score}%` : '-'}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2.5 py-0.75 font-bold rounded-full border text-[9px] uppercase tracking-wider inline-block ${statusColors[rev.status] || 'bg-slate-100 text-slate-800'}`}>
+                            {rev.status}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <div className="text-center p-12 text-primary-400 font-semibold italic bg-transparent">No reviews created yet. Let's submit a pull request!</div>
+            )}
+          </div>
         </div>
       </div>
     </div>

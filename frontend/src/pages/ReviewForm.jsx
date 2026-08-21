@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { reviewService } from '../services/api';
-import { FileUp, ArrowLeft, Plus, X, AlertCircle } from 'lucide-react';
+import { FileUp, ArrowLeft, Plus, X, AlertCircle, Cpu, ShieldCheck } from 'lucide-react';
 
 const ReviewForm = () => {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const ReviewForm = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto">
       {/* Header back button */}
       <div className="flex items-center gap-4 bg-surface-200/90 border border-glass backdrop-blur-md p-5 rounded-2xl shadow-lg">
         <Link 
@@ -100,15 +100,15 @@ const ReviewForm = () => {
         </div>
       )}
 
-      {/* Form Container */}
-      <form onSubmit={handleSubmit} className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl shadow-xl p-6 md:p-8 space-y-8">
-        
-        {/* Core Review Details section */}
-        <div className="space-y-6">
-          <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2.5">Review details</h3>
+      {/* Grid of Sections */}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-1.5 col-span-1 md:col-span-2">
+          {/* Card 1: REQUEST DETAILS */}
+          <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl p-6 shadow-xl space-y-4">
+            <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2">1. Request Details</h3>
+            
+            <div className="space-y-1.5">
               <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Pull Request Title</label>
               <input 
                 type="text"
@@ -143,7 +143,12 @@ const ReviewForm = () => {
                 className="w-full glass-input px-4 py-3 text-xs font-mono"
               />
             </div>
+          </div>
 
+          {/* Card 2: REVIEW REQUIREMENTS */}
+          <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl p-6 shadow-xl space-y-4">
+            <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2">2. Review Requirements</h3>
+            
             <div className="space-y-1.5">
               <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Code Review Priority</label>
               <select
@@ -151,10 +156,10 @@ const ReviewForm = () => {
                 onChange={(e) => setPriority(e.target.value)}
                 className="w-full bg-darkbg border border-white/10 text-primary-200 hover:text-white rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:bg-darkbg text-xs font-bold px-4 py-3 outline-none transition-all cursor-pointer"
               >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-                <option value="Critical">Critical</option>
+                <option value="Low">Low Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="High">High Priority</option>
+                <option value="Critical">Critical Priority</option>
               </select>
             </div>
 
@@ -171,7 +176,7 @@ const ReviewForm = () => {
               </select>
             </div>
 
-            <div className="space-y-1.5 col-span-1 md:col-span-2">
+            <div className="space-y-1.5">
               <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Submission Deadline</label>
               <input 
                 type="date"
@@ -181,109 +186,124 @@ const ReviewForm = () => {
                 className="w-full glass-input px-4 py-3 text-xs font-bold"
               />
             </div>
+          </div>
 
-            <div className="space-y-1.5 col-span-1 md:col-span-2">
-              <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Pull Request Description / Summary</label>
-              <textarea
-                rows="4"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Detail changes, technical scope, and items for the reviewer..."
-                required
-                className="w-full glass-input px-4 py-3 text-xs resize-none"
-              ></textarea>
+          {/* Description Span (col-span-2) */}
+          <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl p-6 shadow-xl space-y-4 md:col-span-2">
+            <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Pull Request Description / Summary</label>
+            <textarea
+              rows="4"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Detail changes, technical scope, and items for the reviewer..."
+              required
+              className="w-full glass-input px-4 py-3 text-xs resize-none"
+            ></textarea>
+          </div>
+
+          {/* Card 3: TECHNOLOGY / EXPERTISE */}
+          <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl p-6 shadow-xl space-y-4">
+            <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2">3. Technology / Expertise</h3>
+            
+            <div className="flex gap-2.5">
+              <input 
+                type="text"
+                value={techInput}
+                onChange={(e) => setTechInput(e.target.value)}
+                placeholder="Add technology e.g. React..."
+                className="flex-1 glass-input px-3.5 py-3 text-xs"
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTech())}
+              />
+              <button
+                type="button"
+                onClick={() => handleAddTech()}
+                className="btn-primary px-3.5 py-3 text-xs flex items-center justify-center gap-1 cursor-pointer"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add</span>
+              </button>
             </div>
-          </div>
-        </div>
 
-        {/* Technologies Grid section */}
-        <div className="space-y-6 border-t border-white/5 pt-6">
-          <div>
-            <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2.5">Required Expertise Domains</h3>
-            <p className="text-[10px] text-primary-400 font-semibold mt-1">Specify technologies to prompt matching checks for developers</p>
-          </div>
-          
-          <div className="flex gap-3">
-            <input 
-              type="text"
-              value={techInput}
-              onChange={(e) => setTechInput(e.target.value)}
-              placeholder="Add technology e.g. React..."
-              className="flex-1 glass-input px-4 py-3.5 text-xs"
-              onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTech())}
-            />
-            <button
-              type="button"
-              onClick={() => handleAddTech()}
-              className="btn-primary px-4 py-3.5 text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Add</span>
-            </button>
-          </div>
-
-          {/* Quick Suggestions */}
-          <div className="space-y-2">
-            <span className="text-[9px] text-primary-400 font-extrabold uppercase tracking-wider block font-sans">Common Tech Stack tags:</span>
-            <div className="flex flex-wrap gap-1.5">
-              {suggestedTechs.map(tech => (
-                <button
-                  key={tech}
-                  type="button"
-                  onClick={() => handleAddTech(tech)}
-                  className="bg-white/5 hover:bg-white/10 text-primary-350 hover:text-white border border-white/10 hover:border-white/20 rounded-lg px-2.5 py-1 text-[10px] font-bold transition-all cursor-pointer shadow-sm"
-                >
-                  +{tech}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Active Tags list */}
-          <div className="bg-darkbg/50 p-4 rounded-2xl border border-white/5 min-h-[90px] space-y-3 shadow-inner">
-            <span className="text-[9px] text-primary-450 font-extrabold uppercase tracking-wider block">Assigned Tech tags:</span>
-            <div className="flex flex-wrap gap-2.5">
-              {technologies.length > 0 ? (
-                technologies.map((tech, index) => (
-                  <span 
-                    key={index} 
-                    className="bg-surface-100 border border-glass text-white pl-3.5 pr-1.5 py-1 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm"
+            {/* Quick Suggestions */}
+            <div className="space-y-1.5">
+              <span className="text-[9px] text-primary-400 font-extrabold uppercase tracking-wider block">Common Tech tags:</span>
+              <div className="flex flex-wrap gap-1.5">
+                {suggestedTechs.slice(0, 8).map(tech => (
+                  <button
+                    key={tech}
+                    type="button"
+                    onClick={() => handleAddTech(tech)}
+                    className="bg-white/5 hover:bg-white/10 text-primary-350 hover:text-white border border-white/10 hover:border-white/20 rounded-lg px-2 py-0.75 text-[10px] font-bold transition-all cursor-pointer shadow-sm"
                   >
-                    <span>{tech}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTech(index)}
-                      className="p-1 hover:bg-white/5 hover:text-red-450 rounded-lg transition-colors text-primary-405 cursor-pointer focus:outline-none"
+                    +{tech}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Active Tags list */}
+            <div className="bg-darkbg/50 p-4 rounded-xl border border-white/5 min-h-[70px] space-y-2">
+              <span className="text-[9px] text-primary-450 font-extrabold uppercase tracking-wider block">Assigned Tech tags:</span>
+              <div className="flex flex-wrap gap-2">
+                {technologies.length > 0 ? (
+                  technologies.map((tech, index) => (
+                    <span 
+                      key={index} 
+                      className="bg-surface-100 border border-glass text-white pl-2.5 pr-1 py-0.75 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm"
                     >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
+                      <span>{tech}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTech(index)}
+                        className="p-0.5 hover:bg-white/5 hover:text-red-450 rounded transition-colors text-primary-405 cursor-pointer focus:outline-none"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-xs text-primary-455 font-semibold italic block py-1">
+                    No technologies added yet.
                   </span>
-                ))
-              ) : (
-                <span className="text-xs text-primary-455 font-semibold italic block py-2">
-                  No technologies added yet. Add at least one required tag.
-                </span>
-              )}
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Actions buttons */}
-        <div className="flex justify-end gap-3 border-t border-white/5 pt-6">
-          <Link
-            to="/reviews"
-            className="btn-secondary px-4 py-2.5 rounded-xl text-xs flex items-center"
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-primary px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md"
-          >
-            <FileUp className="h-4 w-4" />
-            <span>Submit Review Request</span>
-          </button>
+          {/* Card 4: ROUTING / ASSIGNMENT INFORMATION */}
+          <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl p-6 shadow-xl space-y-5 flex flex-col justify-between">
+            <div className="space-y-4">
+              <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2">4. Assignment Information</h3>
+              <div className="flex items-start gap-3 bg-brand-500/5 border border-brand-500/10 rounded-xl p-4">
+                <Cpu className="h-5 w-5 text-brand-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="text-[10px] font-black text-brand-400 uppercase tracking-wider">Algorithmic Routing</h4>
+                  <p className="text-[11px] text-primary-200 mt-1 leading-relaxed font-semibold">
+                    Upon submission, our routing engine automatically runs matchmaking criteria. It will check availability, workloads, experience details, and expertise matches to assign the most suited developer.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons Row */}
+            <div className="flex justify-end gap-3 pt-4 border-t border-white/5">
+              <Link
+                to="/reviews"
+                className="btn-secondary px-4 py-2.5 rounded-xl text-xs flex items-center"
+              >
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md"
+              >
+                <FileUp className="h-4 w-4" />
+                <span>Submit Request</span>
+              </button>
+            </div>
+          </div>
+
         </div>
       </form>
     </div>

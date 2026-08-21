@@ -82,12 +82,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
-      {/* Subtle background glow effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-500/5 rounded-full blur-3xl pointer-events-none z-0"></div>
-      
+    <div className="min-h-screen flex items-center justify-center p-4 md:p-8 relative overflow-hidden bg-transparent">
       {/* Network / Line SVG Decoration */}
-      <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
+      <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
             <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(148, 163, 184, 0.15)" strokeWidth="0.5" />
@@ -101,8 +98,31 @@ const Login = () => {
         
         {/* Left Side: Dark Branding Panel (MD only) */}
         <div className="hidden md:flex md:col-span-5 bg-surface-300/40 p-8 flex-col justify-between relative overflow-hidden border-r border-glass">
+          
           {/* Subtle cyan glow accent */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-brand-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+          
+          {/* Algorithmic SVG Network Diagram */}
+          <div className="absolute inset-0 w-full h-full pointer-events-none opacity-25 z-0 flex items-center justify-center">
+            <svg className="w-full h-full" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Connected lines */}
+              <path d="M 40 100 L 120 180 M 120 180 L 220 120 M 120 180 L 170 300 M 170 300 L 260 220 M 40 280 L 170 300" stroke="rgba(14, 165, 233, 0.35)" strokeWidth="1.5" />
+              <path d="M 120 180 L 40 280 M 220 120 L 260 220" stroke="rgba(124, 58, 237, 0.25)" strokeWidth="1" strokeDasharray="3 3" />
+              
+              {/* Nodes */}
+              <circle cx="40" cy="100" r="5" fill="#0ea5e9" className="animate-pulse" />
+              <circle cx="120" cy="180" r="7" fill="#7c3aed" />
+              <circle cx="220" cy="120" r="4" fill="#06b6d4" />
+              <circle cx="260" cy="220" r="6" fill="#0ea5e9" />
+              <circle cx="170" cy="300" r="8" fill="#7c3aed" className="animate-pulse" />
+              <circle cx="40" cy="280" r="5" fill="#06b6d4" />
+
+              {/* Data points labels */}
+              <text x="50" y="98" fill="rgba(148, 163, 184, 0.6)" fontSize="7" fontFamily="monospace">Expertise: React</text>
+              <text x="132" y="184" fill="rgba(14, 165, 233, 0.8)" fontSize="7" fontFamily="monospace" fontWeight="bold">Scoring Engine</text>
+              <text x="182" y="304" fill="rgba(124, 58, 237, 0.8)" fontSize="7" fontFamily="monospace" fontWeight="bold">Developer (92%)</text>
+            </svg>
+          </div>
           
           <div className="flex items-center gap-2.5 z-10">
             <div className="p-2 bg-brand-500/10 rounded-xl border border-brand-500/20 shadow-[0_0_15px_rgba(14,165,233,0.15)]">
@@ -110,19 +130,19 @@ const Login = () => {
             </div>
             <div>
               <h2 className="font-black tracking-wider text-sm text-white">REV-ASSIGN</h2>
-              <p className="text-[9px] text-brand-400 font-extrabold uppercase tracking-wider">Engine Suite</p>
+              <p className="text-[9px] text-brand-400 font-extrabold uppercase tracking-wider">ENGINE SUITE</p>
             </div>
           </div>
 
           <div className="z-10 space-y-4 my-auto">
-            <h3 className="text-xl font-bold leading-tight text-white">
+            <h3 className="text-xl font-black leading-tight text-white">
               Intelligent Routing for Peer Code Reviews
             </h3>
             <p className="text-xs text-primary-350 leading-relaxed font-medium">
               Eliminate review bottlenecks. Automatically assign pull requests to developers based on expertise alignment, workload limits, and experience details.
             </p>
             
-            <div className="space-y-2 pt-4">
+            <div className="space-y-2.5 pt-4">
               <div className="flex items-center gap-2.5 text-xs text-primary-200 font-semibold">
                 <ShieldCheck className="h-4 w-4 text-brand-400" />
                 <span>Weighted Matching Engine</span>
