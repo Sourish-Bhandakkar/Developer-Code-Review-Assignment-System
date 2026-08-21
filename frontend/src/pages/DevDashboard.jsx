@@ -41,6 +41,13 @@ const DevDashboard = () => {
     }
   }, [developerProfile]);
 
+  const getGreeting = () => {
+    const hr = new Date().getHours();
+    if (hr < 12) return 'Good morning';
+    if (hr < 17) return 'Good afternoon';
+    return 'Good evening';
+  };
+
   const handleAvailabilityChange = async (newAvailability) => {
     if (!developerProfile || availabilityChanging) return;
     setAvailabilityChanging(true);
@@ -88,9 +95,9 @@ const DevDashboard = () => {
   const completedReviews = myReviews.filter(r => r.status === 'Completed');
 
   const availabilities = [
-    { label: 'Available', color: 'bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-650' },
-    { label: 'Busy', color: 'bg-yellow-600 hover:bg-yellow-500 text-white border-yellow-650' },
-    { label: 'Unavailable', color: 'bg-red-600 hover:bg-red-500 text-white border-red-655' }
+    { label: 'Available', color: 'bg-emerald-650 hover:bg-emerald-500 text-white border-emerald-700' },
+    { label: 'Busy', color: 'bg-yellow-650 hover:bg-yellow-500 text-white border-yellow-700' },
+    { label: 'Unavailable', color: 'bg-red-650 hover:bg-red-500 text-white border-red-700' }
   ];
 
   return (
@@ -98,8 +105,10 @@ const DevDashboard = () => {
       {/* Dev Header */}
       <div className="bg-surface-350/30 border border-glass backdrop-blur-md p-6 rounded-2xl shadow-lg flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h2 className="text-xl font-black text-white tracking-wide">Developer Dashboard</h2>
-          <p className="text-xs text-primary-400 font-semibold mt-1">Workload tracking & review queue management</p>
+          <h2 className="text-xl font-black text-white tracking-wide">
+            {getGreeting()}, {user?.name?.split(' ')[0]}
+          </h2>
+          <p className="text-xs text-primary-400 font-semibold mt-1">Here's what's happening across your code review pipeline</p>
         </div>
         
         {/* Availability Settings Box */}
