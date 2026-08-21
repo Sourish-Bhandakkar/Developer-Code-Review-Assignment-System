@@ -50,17 +50,17 @@ const ScoreBreakdown = ({ scoreDetails }) => {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-primary-200/80 p-6 shadow-sm space-y-6">
-      <div className="flex items-center justify-between border-b border-primary-100 pb-4">
+    <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl p-6 shadow-xl space-y-6">
+      <div className="flex items-center justify-between border-b border-white/5 pb-4">
         <div>
-          <h3 className="text-sm font-extrabold text-primary-850">Scoring Engine Explanation</h3>
+          <h3 className="text-sm font-extrabold text-white">Scoring Engine Explanation</h3>
           <p className="text-[10px] text-primary-400 font-bold uppercase tracking-wider mt-0.5">Auto-generated weighted assignment scores</p>
         </div>
         <div className="text-right">
-          <div className="text-3xl font-black text-brand-600 leading-none">
+          <div className="text-3xl font-black text-brand-400 leading-none">
             {finalScore} <span className="text-xs font-semibold text-primary-400">/ 100</span>
           </div>
-          <span className="text-[9px] uppercase font-extrabold tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200/50 px-2.5 py-0.5 rounded-full mt-1.5 inline-block">
+          <span className="text-[9px] uppercase font-extrabold tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.75 rounded-full mt-1.5 inline-block">
             Match Score
           </span>
         </div>
@@ -74,21 +74,21 @@ const ScoreBreakdown = ({ scoreDetails }) => {
             <div key={index} className="space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-primary-750">{factor.name}</span>
-                  <span className="text-[9px] text-primary-500 font-bold bg-primary-55 px-1.5 py-0.25 rounded border border-primary-200/40">
+                  <span className="font-bold text-primary-200">{factor.name}</span>
+                  <span className="text-[9px] text-primary-350 font-bold bg-white/5 px-1.5 py-0.25 rounded border border-white/10">
                     Weight: {factor.weight}%
                   </span>
                 </div>
-                <div className="font-mono text-primary-500 text-[10px] font-semibold">
-                  Raw: <span className="font-bold text-primary-800">{factor.rawScore}</span> | 
-                  Contrib: <span className="font-bold text-brand-600">+{weightedContribution}</span>
+                <div className="font-mono text-primary-400 text-[10px] font-semibold">
+                  Raw: <span className="font-bold text-primary-100">{factor.rawScore}</span> | 
+                  Contrib: <span className="font-bold text-brand-400">+{weightedContribution}</span>
                 </div>
               </div>
               
               {/* Progress bar */}
-              <div className="h-2 w-full bg-primary-100/70 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                 <div 
-                  className={`h-full rounded-full transition-all duration-500 ${
+                  className={`h-full rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(14,165,233,0.2)] ${
                     factor.rawScore >= 80 ? 'bg-emerald-500' : factor.rawScore >= 50 ? 'bg-brand-500' : 'bg-amber-500'
                   }`}
                   style={{ width: `${factor.rawScore}%` }}
@@ -101,11 +101,11 @@ const ScoreBreakdown = ({ scoreDetails }) => {
       </div>
 
       {/* Decision Summary Info Box */}
-      <div className="bg-brand-50/40 border border-brand-100/80 rounded-xl p-4 flex items-start gap-3">
-        <CheckCircle2 className="h-5 w-5 text-brand-600 mt-0.5 flex-shrink-0" />
+      <div className="bg-brand-500/5 border border-brand-500/15 rounded-xl p-4 flex items-start gap-3">
+        <CheckCircle2 className="h-5 w-5 text-brand-400 mt-0.5 flex-shrink-0" />
         <div>
-          <h5 className="text-[10px] font-extrabold text-brand-900 uppercase tracking-widest">Assignment Decision</h5>
-          <p className="text-xs text-brand-850 mt-1 font-semibold leading-relaxed">
+          <h5 className="text-[10px] font-black text-brand-400 uppercase tracking-widest">Assignment Decision</h5>
+          <p className="text-xs text-primary-200 mt-1 font-semibold leading-relaxed">
             {explanationText}
           </p>
         </div>

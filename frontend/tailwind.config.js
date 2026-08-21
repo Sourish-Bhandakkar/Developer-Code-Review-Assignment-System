@@ -7,6 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {
+        darkbg: {
+          DEFAULT: '#020617',
+          deep: '#050B1A',
+        },
+        surface: {
+          50: '#111D35',
+          100: '#0F1B32',
+          200: '#0B162B',
+          300: '#081226',
+        },
+        glass: 'rgba(148, 163, 184, 0.12)',
         primary: {
           50: '#f8fafc',
           100: '#f1f5f9',

@@ -45,7 +45,7 @@ const MainLayout = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   return (
-    <div className="flex h-screen bg-primary-50 overflow-hidden relative">
+    <div className="flex h-screen bg-transparent overflow-hidden relative">
       {/* Sidebar overlay backdrop */}
       {mobileMenuOpen && (
         <div 
@@ -59,27 +59,27 @@ const MainLayout = () => {
       
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-16 bg-white border-b border-primary-200/80 flex items-center justify-between px-4 md:px-8 shadow-sm z-20">
+        <header className="h-16 bg-surface-300/40 backdrop-blur-md border-b border-glass flex items-center justify-between px-4 md:px-8 shadow-lg z-20">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-2 rounded-lg text-primary-500 hover:bg-primary-100 hover:text-primary-800 transition-colors focus:outline-none"
+              className="md:hidden p-2 rounded-xl text-primary-300 hover:bg-white/5 hover:text-white transition-colors focus:outline-none"
             >
               <Menu className="h-5 w-5" />
             </button>
             <div className="flex items-center gap-2">
               <span className="text-[10px] md:text-xs font-bold text-primary-400">Environment:</span>
-              <span className="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200 uppercase tracking-wider">
+              <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-500/20 uppercase tracking-wider">
                 Production-Ready
               </span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <span className="text-[10px] font-bold text-primary-400 uppercase tracking-wider block">Workspace Profile</span>
-              <span className="text-xs font-bold text-primary-850">{user?.name}</span>
+              <span className="text-[9px] font-extrabold text-primary-400 uppercase tracking-wider block">Workspace Profile</span>
+              <span className="text-xs font-bold text-white">{user?.name}</span>
             </div>
-            <div className="h-9 w-9 rounded-full bg-brand-600 hover:bg-brand-700 shadow shadow-brand-500/20 text-white flex items-center justify-center font-bold text-sm transition-colors">
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-brand-500 to-blue-600 shadow shadow-brand-500/20 text-white flex items-center justify-center font-extrabold text-sm border border-white/10 hover:brightness-110 transition-all cursor-pointer">
               {user?.name?.charAt(0).toUpperCase()}
             </div>
           </div>

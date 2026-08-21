@@ -50,15 +50,15 @@ const HistoryPage = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-primary-200/80 shadow-sm">
+      <div className="bg-surface-350/30 border border-glass backdrop-blur-md p-6 rounded-2xl shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-primary-900">Assignment History Log</h2>
+          <h2 className="text-xl font-black text-white tracking-wide">Assignment History Log</h2>
           <p className="text-xs text-primary-400 font-semibold mt-1">Audit logs of all system routing actions and manual overrides</p>
         </div>
       </div>
 
       {/* Filters Search Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-primary-200/80 shadow-sm flex flex-col md:flex-row gap-4">
+      <div className="bg-surface-200/90 border border-glass backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-primary-400" />
           <input 
@@ -66,7 +66,7 @@ const HistoryPage = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search audit trail by developer, repository, pull request title, or ID..."
-            className="w-full pl-10 pr-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-800 transition-all font-medium"
+            className="w-full pl-10 pr-4 py-3 bg-darkbg/85 border border-white/10 hover:border-white/15 focus:border-brand-500 focus:bg-darkbg text-xs rounded-xl focus:outline-none text-white transition-all font-medium"
           />
         </div>
 
@@ -76,7 +76,7 @@ const HistoryPage = () => {
             <select
               value={actionFilter}
               onChange={(e) => setActionFilter(e.target.value)}
-              className="w-full sm:w-44 px-3.5 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-850 transition-all font-bold cursor-pointer"
+              className="w-full sm:w-44 px-3.5 py-3 bg-darkbg border border-white/10 text-primary-200 hover:text-white rounded-xl focus:border-brand-500 focus:bg-darkbg text-xs font-bold outline-none transition-all cursor-pointer"
             >
               <option value="">All Actions</option>
               <option value="Assign">Assign (Auto-Routed)</option>
@@ -91,7 +91,7 @@ const HistoryPage = () => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="w-full sm:w-40 px-3.5 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-850 transition-all font-bold cursor-pointer"
+              className="w-full sm:w-40 px-3.5 py-3 bg-darkbg border border-white/10 text-primary-200 hover:text-white rounded-xl focus:border-brand-500 focus:bg-darkbg text-xs font-bold outline-none transition-all cursor-pointer"
             >
               <option value="">All Priorities</option>
               <option value="Low">Low</option>
@@ -106,20 +106,20 @@ const HistoryPage = () => {
       {/* History table */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
         </div>
       ) : error ? (
-        <div className="bg-red-50 border border-red-200 text-red-755 p-4 rounded-xl flex items-center gap-3 shadow-sm">
-          <AlertCircle className="h-5 w-5 text-red-650 flex-shrink-0" />
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl flex items-center gap-3 shadow-lg">
+          <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
           <span className="text-xs font-semibold">{error}</span>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-primary-200/80 shadow-sm overflow-hidden">
+        <div className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl shadow-xl overflow-hidden">
           <div className="overflow-x-auto">
             {filteredHistory.length > 0 ? (
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-primary-200/60 bg-primary-50/50 text-primary-400 font-extrabold uppercase tracking-widest text-[9px]">
+                  <tr className="border-b border-glass bg-white/2 text-primary-400 font-extrabold uppercase tracking-widest text-[9px]">
                     <th className="px-6 py-4">Timestamp</th>
                     <th className="px-6 py-4">Action Event</th>
                     <th className="px-6 py-4">Developer Assigned</th>
@@ -128,20 +128,20 @@ const HistoryPage = () => {
                     <th className="px-6 py-4">Review Priority</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-primary-100">
+                <tbody className="divide-y divide-white/5">
                   {filteredHistory.map(item => {
                     const actionStyles = {
-                      Assign: 'bg-blue-50 text-blue-700 border-blue-200/60',
-                      Reassign: 'bg-purple-50 text-purple-705 border-purple-200/60',
-                      'In Progress': 'bg-orange-50 text-orange-700 border-orange-200/60',
-                      Complete: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+                      Assign: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+                      Reassign: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+                      'In Progress': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+                      Complete: 'bg-emerald-500/10 text-emerald-450 border-emerald-500/20',
                     };
 
                     return (
-                      <tr key={item.id} className="hover:bg-primary-50/30 transition-colors">
-                        <td className="px-6 py-4 text-primary-500 font-semibold">
+                      <tr key={item.id} className="hover:bg-white/2 transition-colors">
+                        <td className="px-6 py-4 text-primary-400 font-semibold">
                           <span className="flex items-center gap-1.5">
-                            <Calendar className="h-3.5 w-3.5 text-primary-400" />
+                            <Calendar className="h-3.5 w-3.5 text-primary-405" />
                             {new Date(item.timestamp).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </td>
@@ -152,22 +152,22 @@ const HistoryPage = () => {
                              item.action === 'In Progress' ? 'Started Work' : 'Completed'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 font-bold text-primary-750">{item.developer_name}</td>
+                        <td className="px-6 py-4 font-bold text-white">{item.developer_name}</td>
                         <td className="px-6 py-4">
-                          <div className="font-bold text-primary-850 text-sm leading-snug">{item.title}</div>
+                          <div className="font-bold text-white text-sm leading-snug">{item.title}</div>
                           <span className="text-primary-400 text-[10px] font-semibold block mt-0.5">
                             {item.repository_name} &bull; <span className="font-mono">{item.pull_request_id}</span>
                           </span>
                         </td>
-                        <td className="px-6 py-4 font-bold font-mono text-brand-650 text-center text-sm">
+                        <td className="px-6 py-4 font-bold font-mono text-brand-400 text-center text-sm">
                           {item.score > 0 ? `${item.score}%` : '-'}
                         </td>
                         <td className="px-6 py-4">
                           <span className={`px-2.5 py-0.5 rounded-full font-bold text-[9px] border inline-block uppercase tracking-wider ${
-                            item.priority === 'Critical' ? 'bg-red-50 text-red-700 border-red-200' :
-                            item.priority === 'High' ? 'bg-orange-50 text-orange-700 border-orange-200' :
-                            item.priority === 'Medium' ? 'bg-yellow-55 text-yellow-750 border-yellow-250' :
-                            'bg-emerald-50 text-emerald-700 border-emerald-200'
+                            item.priority === 'Critical' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                            item.priority === 'High' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                            item.priority === 'Medium' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                            'bg-emerald-500/10 text-emerald-450 border-emerald-500/20'
                           }`}>
                             {item.priority}
                           </span>
@@ -178,7 +178,7 @@ const HistoryPage = () => {
                 </tbody>
               </table>
             ) : (
-              <div className="text-center p-12 text-primary-400 font-semibold italic bg-white">
+              <div className="text-center p-12 text-primary-400 font-semibold italic bg-transparent">
                 🔍 No history logs match selected filters.
               </div>
             )}

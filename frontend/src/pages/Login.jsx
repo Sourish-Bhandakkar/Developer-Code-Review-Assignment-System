@@ -82,25 +82,35 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-primary-950 flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
-      {/* Subtle radial glow in the center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-500/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="min-h-screen flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
+      {/* Subtle background glow effect */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-500/5 rounded-full blur-3xl pointer-events-none z-0"></div>
+      
+      {/* Network / Line SVG Decoration */}
+      <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(148, 163, 184, 0.15)" strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+      </svg>
 
       {/* Auth Card wrapper */}
-      <div className="w-full max-w-4xl bg-primary-900 rounded-2xl shadow-2xl shadow-primary-950/60 border border-primary-850/80 overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[600px] relative z-10">
+      <div className="w-full max-w-4xl bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[620px] relative z-10">
         
         {/* Left Side: Dark Branding Panel (MD only) */}
-        <div className="hidden md:flex md:col-span-5 bg-primary-950/70 text-white p-8 flex-col justify-between relative overflow-hidden border-r border-primary-850/40">
-          {/* Subtle accent light highlights */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-brand-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+        <div className="hidden md:flex md:col-span-5 bg-surface-300/40 p-8 flex-col justify-between relative overflow-hidden border-r border-glass">
+          {/* Subtle cyan glow accent */}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-brand-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
           
           <div className="flex items-center gap-2.5 z-10">
-            <div className="p-2 bg-brand-500/10 rounded-xl border border-brand-500/20 shadow-inner">
+            <div className="p-2 bg-brand-500/10 rounded-xl border border-brand-500/20 shadow-[0_0_15px_rgba(14,165,233,0.15)]">
               <Code2 className="h-6 w-6 text-brand-400" />
             </div>
             <div>
-              <h2 className="font-extrabold tracking-wider text-sm text-white">REV-ASSIGN</h2>
-              <p className="text-[9px] text-brand-400 font-bold uppercase tracking-wider">Engine Suite</p>
+              <h2 className="font-black tracking-wider text-sm text-white">REV-ASSIGN</h2>
+              <p className="text-[9px] text-brand-400 font-extrabold uppercase tracking-wider">Engine Suite</p>
             </div>
           </div>
 
@@ -108,20 +118,20 @@ const Login = () => {
             <h3 className="text-xl font-bold leading-tight text-white">
               Intelligent Routing for Peer Code Reviews
             </h3>
-            <p className="text-xs text-primary-400 leading-relaxed font-medium">
+            <p className="text-xs text-primary-350 leading-relaxed font-medium">
               Eliminate review bottlenecks. Automatically assign pull requests to developers based on expertise alignment, workload limits, and experience details.
             </p>
             
             <div className="space-y-2 pt-4">
-              <div className="flex items-center gap-2 text-xs text-primary-300 font-medium">
+              <div className="flex items-center gap-2.5 text-xs text-primary-200 font-semibold">
                 <ShieldCheck className="h-4 w-4 text-brand-400" />
                 <span>Weighted Matching Engine</span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-primary-300 font-medium">
+              <div className="flex items-center gap-2.5 text-xs text-primary-200 font-semibold">
                 <ShieldCheck className="h-4 w-4 text-brand-400" />
                 <span>Workload Capacity Safeguards</span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-primary-300 font-medium">
+              <div className="flex items-center gap-2.5 text-xs text-primary-200 font-semibold">
                 <ShieldCheck className="h-4 w-4 text-brand-400" />
                 <span>Audit Timeline Logging</span>
               </div>
@@ -134,7 +144,7 @@ const Login = () => {
         </div>
 
         {/* Right Side: Tabbed Forms (Fully Dark navy/blue-gray) */}
-        <div className="col-span-1 md:col-span-7 p-6 md:p-10 flex flex-col justify-between bg-primary-900/90">
+        <div className="col-span-1 md:col-span-7 p-6 md:p-10 flex flex-col justify-between bg-transparent">
           
           {/* Header Mobile Brand */}
           <div className="flex md:hidden items-center gap-2 mb-6">
@@ -144,7 +154,7 @@ const Login = () => {
 
           <div className="space-y-6">
             {/* Tabs Trigger */}
-            <div className="flex border-b border-primary-800 pb-px">
+            <div className="flex border-b border-white/5 pb-px">
               <button
                 type="button"
                 onClick={() => { setMode('login'); setFormError(''); }}
@@ -180,15 +190,15 @@ const Login = () => {
               {mode === 'register' && (
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-extrabold text-primary-400 uppercase tracking-wider block">Full Name</label>
-                  <div className="relative flex items-center bg-primary-950 border border-primary-800 hover:border-primary-750 focus-within:border-brand-500 rounded-xl transition-all">
-                    <User className="absolute left-3.5 h-4 w-4 text-primary-500" />
+                  <div className="relative flex items-center bg-darkbg border border-white/10 hover:border-white/15 focus-within:border-brand-500 rounded-xl transition-all">
+                    <User className="absolute left-3.5 h-4 w-4 text-primary-400" />
                     <input 
                       type="text" 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Rahul Sharma"
                       required
-                      className="w-full pl-10 pr-4 py-3 bg-transparent text-white text-xs focus:outline-none placeholder-primary-600 font-medium"
+                      className="w-full pl-10 pr-4 py-3.5 bg-transparent text-white text-xs focus:outline-none placeholder-primary-600 font-medium"
                     />
                   </div>
                 </div>
@@ -196,35 +206,35 @@ const Login = () => {
 
               <div className="space-y-1.5">
                 <label className="text-[10px] font-extrabold text-primary-400 uppercase tracking-wider block">Email Address</label>
-                <div className="relative flex items-center bg-primary-950 border border-primary-800 hover:border-primary-750 focus-within:border-brand-500 rounded-xl transition-all">
-                  <Mail className="absolute left-3.5 h-4 w-4 text-primary-500" />
+                <div className="relative flex items-center bg-darkbg border border-white/10 hover:border-white/15 focus-within:border-brand-500 rounded-xl transition-all">
+                  <Mail className="absolute left-3.5 h-4 w-4 text-primary-400" />
                   <input 
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="developer@company.com"
                     required
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white text-xs focus:outline-none placeholder-primary-600 font-medium"
+                    className="w-full pl-10 pr-4 py-3.5 bg-transparent text-white text-xs focus:outline-none placeholder-primary-600 font-medium"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-[10px] font-extrabold text-primary-400 uppercase tracking-wider block">Password</label>
-                <div className="relative flex items-center bg-primary-950 border border-primary-800 hover:border-primary-750 focus-within:border-brand-500 rounded-xl transition-all">
-                  <KeyRound className="absolute left-3.5 h-4 w-4 text-primary-500" />
+                <div className="relative flex items-center bg-darkbg border border-white/10 hover:border-white/15 focus-within:border-brand-500 rounded-xl transition-all">
+                  <KeyRound className="absolute left-3.5 h-4 w-4 text-primary-400" />
                   <input 
                     type={showPassword ? "text" : "password"} 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     required
-                    className="w-full pl-10 pr-10 py-3 bg-transparent text-white text-xs focus:outline-none placeholder-primary-600 font-medium"
+                    className="w-full pl-10 pr-10 py-3.5 bg-transparent text-white text-xs focus:outline-none placeholder-primary-600 font-medium"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 text-primary-500 hover:text-primary-300 focus:outline-none cursor-pointer"
+                    className="absolute right-3.5 text-primary-400 hover:text-primary-200 focus:outline-none cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -234,13 +244,13 @@ const Login = () => {
               <button 
                 type="submit" 
                 disabled={submitting}
-                className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-lg shadow-brand-500/10 hover:shadow-brand-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 mt-6"
+                className="w-full btn-primary py-3.5 text-xs tracking-wider uppercase mt-6"
               >
                 {submitting ? (
-                  <>
+                  <div className="flex items-center justify-center gap-2">
                     <Loader className="h-3.5 w-3.5 animate-spin" />
                     <span>Processing...</span>
-                  </>
+                  </div>
                 ) : (
                   <span>{mode === 'login' ? 'Sign In' : 'Create Account'}</span>
                 )}
@@ -249,10 +259,10 @@ const Login = () => {
           </div>
 
           {/* Quick logins helper accordion */}
-          <div className="mt-8 border-t border-primary-800 pt-5 space-y-3">
+          <div className="mt-8 border-t border-white/5 pt-5 space-y-3">
             <button
               onClick={() => setShowDemoAccounts(!showDemoAccounts)}
-              className="w-full flex items-center justify-between text-[10px] text-primary-400 font-extrabold uppercase tracking-widest hover:text-primary-200 transition-colors focus:outline-none cursor-pointer"
+              className="w-full flex items-center justify-between text-[10px] text-primary-400 font-black uppercase tracking-widest hover:text-primary-200 transition-colors focus:outline-none cursor-pointer"
             >
               <span>Viva Demo Quick Login</span>
               {showDemoAccounts ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
@@ -263,10 +273,10 @@ const Login = () => {
                 <button 
                   onClick={() => handleQuickLogin('admin@company.com', 'admin123')}
                   disabled={submitting}
-                  className="px-3.5 py-2.5 bg-primary-950 hover:bg-primary-850 text-primary-200 border border-primary-800 hover:border-primary-700 rounded-xl text-left flex flex-col gap-0.5 cursor-pointer transition-all hover:shadow-sm"
+                  className="px-3.5 py-2.5 bg-darkbg hover:bg-surface-300 border border-white/5 hover:border-white/15 text-primary-200 hover:text-white rounded-xl text-left flex flex-col gap-0.5 cursor-pointer transition-all hover:shadow-sm"
                 >
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-400">Admin Workspace</span>
-                  <span className="text-[9px] text-primary-400 font-bold block mt-0.5">Sourish Bhandakkar</span>
+                  <span className="text-[9px] font-black uppercase tracking-wider text-brand-400">Admin Workspace</span>
+                  <span className="text-[10px] text-primary-300 font-bold block mt-0.5">Sourish Bhandakkar</span>
                 </button>
 
                 <div className="flex flex-col gap-1">
@@ -278,7 +288,7 @@ const Login = () => {
                       }
                     }}
                     disabled={submitting}
-                    className="w-full px-3.5 py-3 bg-primary-950 hover:bg-primary-850 text-primary-200 border border-primary-800 rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all cursor-pointer focus:outline-none"
+                    className="w-full px-3.5 py-3 bg-darkbg text-primary-200 border border-white/5 rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all cursor-pointer focus:outline-none hover:bg-surface-300"
                     defaultValue=""
                   >
                     <option value="" disabled className="normal-case">-- Developer Account --</option>

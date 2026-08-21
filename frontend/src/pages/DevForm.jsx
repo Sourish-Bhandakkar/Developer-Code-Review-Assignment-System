@@ -118,64 +118,64 @@ const DevForm = () => {
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       {/* Header Back Button */}
-      <div className="flex items-center gap-4 bg-white p-5 rounded-2xl border border-primary-200/80 shadow-sm">
+      <div className="flex items-center gap-4 bg-surface-200/90 border border-glass backdrop-blur-md p-5 rounded-2xl shadow-lg">
         <Link 
           to="/developers"
-          className="p-2 hover:bg-primary-50 border border-primary-200 text-primary-600 rounded-xl transition-all cursor-pointer shadow-sm"
+          className="p-2 hover:bg-white/5 border border-white/10 text-primary-300 hover:text-white rounded-xl transition-all cursor-pointer shadow-sm"
         >
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <div>
-          <h2 className="text-lg font-extrabold text-primary-900">
+          <h2 className="text-lg font-extrabold text-white">
             {isEdit ? 'Modify Developer Profile' : 'Register New Developer'}
           </h2>
           <p className="text-[11px] text-primary-400 font-semibold mt-0.5">
-            Configure suitability parameters for automatic reviewer assignment
+            Configure parameters for automatic code review allocation
           </p>
         </div>
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-750 text-xs font-semibold p-4 rounded-xl flex items-start gap-2.5 shadow-sm">
-          <AlertCircle className="h-5 w-5 text-red-650 flex-shrink-0 mt-0.5" />
+        <div className="bg-red-950/20 border border-red-900/50 text-red-300 text-xs font-semibold p-4 rounded-xl flex items-start gap-2.5 shadow-sm">
+          <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
       )}
 
       {/* Main Form container */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-primary-200/80 shadow-sm p-6 md:p-8 space-y-8">
+      <form onSubmit={handleSubmit} className="bg-surface-200/90 border border-glass backdrop-blur-md rounded-2xl shadow-xl p-6 md:p-8 space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Section 1: User Accounts details */}
           <div className="space-y-5">
-            <h3 className="text-[10px] font-black text-brand-600 uppercase tracking-widest border-b border-primary-100 pb-2.5">Account Details</h3>
+            <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2.5">Account Details</h3>
             
             <div className="space-y-1.5">
-              <label className="text-[10px] font-extrabold text-primary-500 uppercase tracking-wider block">Full Name</label>
+              <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Full Name</label>
               <input 
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Rahul Sharma"
                 required
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-800 transition-all font-medium"
+                className="w-full glass-input px-4 py-3 text-xs"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-extrabold text-primary-500 uppercase tracking-wider block">Email Address</label>
+              <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Email Address</label>
               <input 
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="rahul@company.com"
                 required
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-800 transition-all font-medium"
+                className="w-full glass-input px-4 py-3 text-xs"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-extrabold text-primary-500 uppercase tracking-wider block">
-                Password {isEdit && <span className="text-[9px] text-primary-400 font-bold tracking-normal capitalize ml-1">(leave blank to keep current)</span>}
+              <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">
+                Password {isEdit && <span className="text-[9px] text-primary-500 font-bold normal-case ml-1">(leave blank to keep current)</span>}
               </label>
               <input 
                 type="password"
@@ -183,17 +183,17 @@ const DevForm = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required={!isEdit}
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-800 transition-all font-medium"
+                className="w-full glass-input px-4 py-3 text-xs"
               />
             </div>
 
             {isEdit && (
               <div className="space-y-1.5">
-                <label className="text-[10px] font-extrabold text-primary-500 uppercase tracking-wider block">Profile Status</label>
+                <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Profile Status</label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-850 transition-all font-bold cursor-pointer"
+                  className="w-full bg-darkbg border border-white/10 text-primary-200 hover:text-white rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:bg-darkbg text-xs font-bold px-4 py-3 outline-none transition-all cursor-pointer"
                 >
                   <option value="Active">Active Profile</option>
                   <option value="Inactive">Inactive/Deactivated Profile</option>
@@ -204,38 +204,38 @@ const DevForm = () => {
 
           {/* Section 2: Engine Parameters */}
           <div className="space-y-5">
-            <h3 className="text-[10px] font-black text-brand-600 uppercase tracking-widest border-b border-primary-100 pb-2.5">Routing Parameters</h3>
+            <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2.5">Routing Parameters</h3>
             
             <div className="space-y-1.5">
-              <label className="text-[10px] font-extrabold text-primary-500 uppercase tracking-wider block">Years of Experience</label>
+              <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Years of Experience</label>
               <input 
                 type="number"
                 min="0"
                 value={experienceYears}
                 onChange={(e) => setExperienceYears(parseInt(e.target.value) || 0)}
                 required
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-850 transition-all font-bold"
+                className="w-full glass-input px-4 py-3 text-xs font-bold"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-extrabold text-primary-500 uppercase tracking-wider block">Workload Capacity Cap</label>
+              <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Workload Capacity Cap</label>
               <input 
                 type="number"
                 min="1"
                 value={maxWorkload}
                 onChange={(e) => setMaxWorkload(parseInt(e.target.value) || 3)}
                 required
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-850 transition-all font-bold"
+                className="w-full glass-input px-4 py-3 text-xs font-bold"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-extrabold text-primary-500 uppercase tracking-wider block">Availability State</label>
+              <label className="text-[10px] font-extrabold text-primary-300 uppercase tracking-wider block">Availability State</label>
               <select
                 value={availability}
                 onChange={(e) => setAvailability(e.target.value)}
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-850 transition-all font-bold cursor-pointer"
+                className="w-full bg-darkbg border border-white/10 text-primary-200 hover:text-white rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:bg-darkbg text-xs font-bold px-4 py-3 outline-none transition-all cursor-pointer"
               >
                 <option value="Available">Available (Eligible - Full Score)</option>
                 <option value="Busy">Busy (Eligible - Partial Score)</option>
@@ -246,9 +246,9 @@ const DevForm = () => {
         </div>
 
         {/* Section 3: Interactive Expertise Grid */}
-        <div className="space-y-5 border-t border-primary-100 pt-6">
+        <div className="space-y-5 border-t border-white/5 pt-6">
           <div>
-            <h3 className="text-[10px] font-black text-brand-600 uppercase tracking-widest border-b border-primary-100 pb-2.5">Technologies & Expertise Grid</h3>
+            <h3 className="text-[10px] font-black text-brand-400 uppercase tracking-widest border-b border-white/5 pb-2.5">Technologies & Expertise Grid</h3>
             <p className="text-[10px] text-primary-400 font-semibold mt-1">Specify technical domains to allow matching reviews to this developer</p>
           </div>
           
@@ -259,7 +259,7 @@ const DevForm = () => {
                 value={techInput}
                 onChange={(e) => setTechInput(e.target.value)}
                 placeholder="Enter skill tag e.g. PostgreSQL..."
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-800 transition-all font-medium"
+                className="w-full glass-input px-4 py-3.5 text-xs"
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddExpertise())}
               />
             </div>
@@ -268,7 +268,7 @@ const DevForm = () => {
               <select
                 value={skillLevelInput}
                 onChange={(e) => setSkillLevelInput(e.target.value)}
-                className="w-full px-4 py-3 bg-primary-50/50 border border-primary-200 hover:border-primary-300 focus:border-brand-500 focus:bg-white text-xs rounded-xl focus:outline-none text-primary-850 transition-all font-bold cursor-pointer"
+                className="w-full bg-darkbg border border-white/10 text-primary-200 hover:text-white rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:bg-darkbg text-xs font-bold px-4 py-3.5 outline-none transition-all cursor-pointer"
               >
                 <option value={1}>Level 1 (Beginner)</option>
                 <option value={2}>Level 2 (Intermediate)</option>
@@ -279,7 +279,7 @@ const DevForm = () => {
             <button
               type="button"
               onClick={() => handleAddExpertise()}
-              className="px-4 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-brand-500/10 hover:shadow-brand-500/20 transition-all"
+              className="btn-primary px-4 py-3.5 text-xs flex items-center justify-center gap-1.5 shadow-md"
             >
               <Plus className="h-4 w-4" />
               <span>Add Skill</span>
@@ -295,7 +295,7 @@ const DevForm = () => {
                   key={tech}
                   type="button"
                   onClick={() => handleAddExpertise(tech)}
-                  className="bg-primary-50/50 hover:bg-primary-100 text-primary-600 hover:text-primary-800 border border-primary-200/60 hover:border-primary-350 rounded-lg px-2.5 py-1 text-[10px] font-bold transition-all cursor-pointer shadow-sm"
+                  className="bg-white/5 hover:bg-white/10 text-primary-350 hover:text-white border border-white/10 hover:border-white/20 rounded-lg px-2.5 py-1 text-[10px] font-bold transition-all cursor-pointer shadow-sm"
                 >
                   +{tech}
                 </button>
@@ -304,35 +304,35 @@ const DevForm = () => {
           </div>
 
           {/* Configured Expertises Tag List */}
-          <div className="bg-primary-50/30 p-4 rounded-2xl border border-primary-200/60 min-h-[90px] space-y-3">
-            <span className="text-[9px] text-primary-400 font-extrabold uppercase tracking-wider block">Currently Configured Skills:</span>
-            <div className="flex flex-wrap gap-2">
+          <div className="bg-darkbg/50 p-4 rounded-2xl border border-white/5 min-h-[90px] space-y-3 shadow-inner">
+            <span className="text-[9px] text-primary-450 font-extrabold uppercase tracking-wider block">Configured Skills Grid:</span>
+            <div className="flex flex-wrap gap-2.5">
               {expertises.length > 0 ? (
                 expertises.map((exp, index) => (
                   <span 
                     key={index} 
-                    className="bg-white border border-primary-200 text-primary-800 pl-3.5 pr-1.5 py-1 rounded-xl text-xs font-bold flex items-center gap-2.5 shadow-sm"
+                    className="bg-surface-100 border border-glass text-white pl-3.5 pr-1.5 py-1 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm"
                   >
                     <span>{exp.name}</span>
                     <span className={`text-[9px] font-black px-1.5 rounded-md ${
-                      exp.skill_level === 3 ? 'bg-red-100 text-red-700' :
-                      exp.skill_level === 2 ? 'bg-brand-100 text-brand-700' :
-                      'bg-slate-100 text-slate-700'
+                      exp.skill_level === 3 ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+                      exp.skill_level === 2 ? 'bg-brand-500/10 text-brand-400 border border-brand-500/20' :
+                      'bg-white/10 text-primary-400 border border-white/10'
                     }`}>
                       LVL {exp.skill_level}
                     </span>
                     <button
                       type="button"
                       onClick={() => handleRemoveExpertise(index)}
-                      className="p-1 hover:bg-red-50 hover:text-red-650 rounded-lg transition-colors text-primary-400 cursor-pointer"
+                      className="p-1 hover:bg-white/5 hover:text-red-400 rounded-lg transition-colors text-primary-405 cursor-pointer focus:outline-none"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </span>
                 ))
               ) : (
-                <span className="text-xs text-primary-400 font-semibold italic block py-2">
-                  No skills configured. Add at least one matching expertise tag so the routing engine can index this developer profile.
+                <span className="text-xs text-primary-450 font-semibold italic block py-2">
+                  No skills configured. Add at least one technology so reviews can route to this developer.
                 </span>
               )}
             </div>
@@ -340,20 +340,20 @@ const DevForm = () => {
         </div>
 
         {/* Action Buttons Row */}
-        <div className="flex justify-end gap-3 border-t border-primary-100 pt-6">
+        <div className="flex justify-end gap-3 border-t border-white/5 pt-6">
           <Link
             to="/developers"
-            className="px-4 py-2.5 bg-primary-100 hover:bg-primary-200 border border-primary-200 text-primary-700 font-bold rounded-xl transition-all text-xs cursor-pointer"
+            className="btn-secondary px-4 py-2.5 rounded-xl text-xs flex items-center"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-brand-500/10 hover:shadow-brand-500/20 transition-all disabled:opacity-75"
+            className="btn-primary px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md"
           >
             <Save className="h-4 w-4" />
-            <span>{isEdit ? 'Save Profile Changes' : 'Register Profile'}</span>
+            <span>{isEdit ? 'Save Changes' : 'Register Profile'}</span>
           </button>
         </div>
       </form>
